@@ -1,0 +1,6 @@
+<article class="card">
+  <div class="card__imagen" aria-hidden="true"><span>ING</span></div>
+  <h3 class="card__titulo">{{ titulo }}</h3>
+  <p class="card__texto">{{ descripcion }}</p>
+  <app-boton texto="Ver más" variante="secundario" (pulsado)="verMas.emit()" />
+</article>

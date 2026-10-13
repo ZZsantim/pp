@@ -1,0 +1,12 @@
+<section class="catalogo" id="catalogo" aria-labelledby="catalogo-titulo">
+  <app-titulo-seccion texto="Catálogo" />
+  <div class="catalogo__rejilla">
+    @for (producto of productos; track producto.id) {
+      <app-card
+        [titulo]="producto.titulo"
+        [descripcion]="producto.descripcion"
+        (verMas)="verProducto.emit(producto)"
+      />
+    }
+  </div>
+</section>

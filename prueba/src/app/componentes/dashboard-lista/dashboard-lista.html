@@ -1,0 +1,11 @@
+<section class="dashboard">
+  <h2 class="dashboard__rol">{{ rol }}</h2>
+  <div class="dashboard__cuerpo">
+    <div class="dashboard__lista">
+      @for (actividad of actividades; track actividad.texto) {
+        <app-fila-actividad [texto]="actividad.texto" [completada]="actividad.completada" />
+      }
+    </div>
+    <app-panel-estado class="dashboard__estado" />
+  </div>
+</section>

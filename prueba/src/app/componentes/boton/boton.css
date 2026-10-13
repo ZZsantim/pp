@@ -1,0 +1,30 @@
+.boton {
+  min-height: 48px;
+  padding: 12px 28px;
+  border: 0;
+  border-radius: var(--radio);
+  background: var(--color-primario);
+  color: var(--color-blanco);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.boton:hover {
+  background: var(--color-oscuro);
+  transform: translateY(-1px);
+}
+
+.boton--secundario {
+  background: var(--color-acento);
+  color: var(--color-texto);
+}
+
+@media (max-width: 768px) {
+  .boton {
+    min-height: 42px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}

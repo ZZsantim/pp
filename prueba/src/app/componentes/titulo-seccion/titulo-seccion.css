@@ -1,0 +1,12 @@
+.titulo {
+  margin-bottom: 24px;
+  color: var(--color-texto);
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.15;
+}
+
+@media (max-width: 768px) {
+  .titulo {
+    margin-bottom: 18px;
+  }
+}

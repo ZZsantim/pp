@@ -1,0 +1,20 @@
+<header class="header">
+  <a class="header__marca" routerLink="/" aria-label="ING.SOFTWARE, inicio">
+    {{ titulo }}
+  </a>
+  <button
+    class="header__menu-toggle"
+    type="button"
+    [attr.aria-expanded]="menuAbierto"
+    aria-label="Abrir menú"
+    (click)="menuAbierto = !menuAbierto"
+  >
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="header__nav" [class.header__nav--abierto]="menuAbierto" aria-label="Navegación principal">
+    <a routerLink="/" fragment="promociones" (click)="menuAbierto = false">Promociones</a>
+    <a routerLink="/" fragment="contacto" (click)="menuAbierto = false">Contacto</a>
+    <a routerLink="/admin" (click)="menuAbierto = false">Perfil</a>
+    <a class="header__avatar" routerLink="/admin" aria-label="Ir al perfil">IS</a>
+  </nav>
+</header>

@@ -1,0 +1,8 @@
+<button
+  class="boton"
+  [class.boton--secundario]="variante === 'secundario'"
+  [type]="tipo"
+  (click)="pulsado.emit()"
+>
+  {{ texto }}
+</button>

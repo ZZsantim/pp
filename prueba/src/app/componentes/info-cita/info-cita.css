@@ -1,0 +1,50 @@
+.info-cita {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  align-items: stretch;
+  gap: 24px;
+  padding: 28px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-blanco);
+}
+
+.info-cita__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-cita__datos h2 {
+  margin-bottom: 4px;
+  font-size: 22px;
+}
+
+.info-cita__aviso {
+  color: var(--color-oscuro);
+  font-size: 14px;
+}
+
+.info-cita__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  .info-cita {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .info-cita__acciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .info-cita__acciones app-boton {
+    min-width: 0;
+  }
+}

@@ -1,0 +1,27 @@
+.campo-info {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 14px;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  background: var(--color-blanco);
+}
+
+.campo-info__etiqueta {
+  color: var(--color-texto-terciario);
+  font-size: 13px;
+}
+
+.campo-info__valor {
+  font-weight: 650;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .campo-info {
+    min-height: 40px;
+  }
+}

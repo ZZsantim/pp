@@ -1,0 +1,12 @@
+.pagina {
+  max-width: var(--ancho-max);
+  min-height: 60vh;
+  margin: 0 auto;
+  padding: 32px 40px;
+}
+
+@media (max-width: 768px) {
+  .pagina {
+    padding: 22px 20px;
+  }
+}

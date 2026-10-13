@@ -1,0 +1,20 @@
+.badge {
+  padding: 18px 22px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-blanco);
+  font-weight: 700;
+  text-align: center;
+}
+
+.badge--activo {
+  border-color: var(--color-primario);
+}
+
+.badge--pendiente {
+  border-color: var(--color-acento);
+}
+
+.badge--revision {
+  border-color: var(--color-oscuro);
+}

@@ -1,0 +1,16 @@
+<section class="info-cita">
+  <div class="info-cita__datos">
+    <h2>Información de la cita</h2>
+    @for (dato of datos; track dato.etiqueta) {
+      <app-campo-info [etiqueta]="dato.etiqueta" [valor]="dato.valor" />
+    }
+    @if (confirmacion) {
+      <p class="info-cita__aviso">Puedes confirmar o solicitar un cambio de horario.</p>
+    }
+    <div class="info-cita__acciones">
+      <app-boton texto="Confirmar cita" (pulsado)="confirmar.emit()" />
+      <app-boton texto="Reagendar" variante="secundario" (pulsado)="reagendar.emit()" />
+    </div>
+  </div>
+  <app-caja-fotos />
+</section>

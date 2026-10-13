@@ -1,0 +1,10 @@
+<section class="caja-fotos" aria-label="Fotos de la cita">
+  <h3>FOTOS</h3>
+  <div class="caja-fotos__rejilla">
+    @for (foto of fotos; track foto) {
+      <img [src]="foto" alt="Foto del vehículo" />
+    } @empty {
+      <span class="caja-fotos__placeholder">Sin fotos adjuntas</span>
+    }
+  </div>
+</section>

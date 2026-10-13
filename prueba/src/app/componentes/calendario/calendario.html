@@ -1,0 +1,36 @@
+<section class="calendario">
+  <div class="calendario__mes">
+    <button type="button" aria-label="Mes anterior">‹</button>
+    <h2>Octubre 2026</h2>
+    <button type="button" aria-label="Mes siguiente">›</button>
+  </div>
+  <div class="calendario__dias" role="group" aria-label="Selecciona un día">
+    @for (dia of dias; track dia) {
+      <button
+        type="button"
+        [class.calendario__dia--seleccionado]="dia === diaSeleccionado"
+        [attr.aria-pressed]="dia === diaSeleccionado"
+        (click)="seleccionarDia(dia)"
+      >
+        {{ dia }}
+      </button>
+    }
+  </div>
+  <div class="calendario__horarios">
+    <h3>Horarios disponibles</h3>
+    <div>
+      @for (hora of horarios; track hora) {
+        <button
+          type="button"
+          [class.calendario__hora--seleccionada]="hora === horaSeleccionada"
+          [attr.aria-pressed]="hora === horaSeleccionada"
+          (click)="seleccionarHora(hora)"
+        >
+          {{ hora }}
+        </button>
+      }
+    </div>
+  </div>
+  <p class="calendario__seleccion">Seleccionaste el {{ diaSeleccionado }} de octubre a las {{ horaSeleccionada }}</p>
+  <app-boton texto="Continuar" (pulsado)="continuar.emit()" />
+</section>

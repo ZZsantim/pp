@@ -1,0 +1,37 @@
+.dashboard {
+  padding: 24px 40px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-blanco);
+}
+
+.dashboard__rol {
+  font-size: 22px;
+}
+
+.dashboard__cuerpo {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.dashboard__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 16px;
+  }
+
+  .dashboard__cuerpo {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard__estado {
+    display: none;
+  }
+}

@@ -1,0 +1,6 @@
+<div class="actividad" [class.actividad--completada]="completada">
+  <span>{{ texto }}</span>
+  <span class="actividad__marca" [attr.aria-label]="completada ? 'Completada' : 'Pendiente'">
+    {{ completada ? '✓' : '' }}
+  </span>
+</div>

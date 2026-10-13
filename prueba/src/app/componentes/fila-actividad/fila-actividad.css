@@ -1,0 +1,28 @@
+.actividad {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  background: var(--color-blanco);
+}
+
+.actividad--completada {
+  border-color: var(--color-acento);
+  background: var(--color-superficie-suave);
+}
+
+.actividad__marca {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  place-items: center;
+  border: 1px solid var(--color-oscuro);
+  border-radius: 50%;
+  color: var(--color-oscuro);
+  font-weight: 900;
+}
