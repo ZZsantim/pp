@@ -13,6 +13,14 @@ Actualmente no se observan servicios, persistencia, API, autenticación ni estad
 una cita. Por tanto, esas áreas se plantean como trabajo futuro y no como funcionalidades ya
 disponibles que puedan probarse hoy.
 
+El alcance de implementación es **toda la aplicación Angular actual**: sus 19 componentes, las
+seis páginas, el componente raíz y las rutas. Las prioridades siguientes indican el orden de
+trabajo, no elementos que se excluyen de la cobertura final. Las pruebas unitarias comprobarán
+entradas, salidas, lógica, navegación y contenido funcional o accesible. No se necesitan pruebas
+unitarias independientes para CSS, interfaces TypeScript sin lógica ni el arranque de la
+aplicación; el diseño responsive y los recorridos completos entre pantallas se validan aparte con
+pruebas visuales o de integración.
+
 ## 2. Prioridades
 
 | Prioridad | Área | Motivo |
@@ -22,6 +30,10 @@ disponibles que puedan probarse hoy.
 | **P1 — después** | Catálogo, dashboards y páginas | Verifica que los datos se enlacen y que se represente correctamente cada estado. |
 | **P1 — después** | Rutas y pantalla de inicio | Protege los destinos principales y el redireccionamiento de rutas desconocidas. |
 | **P2 — cuando exista lógica** | Validaciones, estado compartido, servicios, persistencia y errores de API | El código actual no incluye aún estas responsabilidades; primero deben diseñarse e implementarse. |
+
+El alcance final incluye también componentes presentacionales. Se cubren con pruebas breves de
+sus entradas, contenido funcional o navegación, según corresponda; no se les atribuye lógica que
+no tienen.
 
 ## 3. Casos propuestos por prioridad
 
@@ -105,11 +117,9 @@ Casos:
 3. **Modelos:** son interfaces TypeScript sin lógica ejecutable. No necesitan pruebas unitarias
    independientes; su contrato se valida mediante compilación estricta y pruebas de los
    componentes que los consumen.
-4. **Componentes principalmente visuales** (`AcercaDe`, `Destacados`, `Footer`, `Header`,
-   `HeroPromo`, `MenuProductos`, `PanelEstado`, `CajaFotos`): priorizar pruebas de entradas,
-   contenido condicional o eventos si el componente tiene ese comportamiento. No crear pruebas
-   que solo repitan cada detalle estático del HTML; validar contenido visible únicamente cuando
-   represente un requisito funcional o accesible.
+4. **Componentes presentacionales:** están incluidos en la cobertura completa de la sección 4.
+   Verificar las entradas, los enlaces, el contenido esencial o el estado accesible que aplique.
+   Evitar comprobar estilos píxel a píxel o duplicar cada texto decorativo del HTML.
 
 ### P2 — Lógica de negocio que todavía no existe
 
@@ -128,48 +138,96 @@ responsabilidades correspondientes:
 
 ## 4. Dónde crear las pruebas
 
-Para mantener el patrón Angular de pruebas junto al código probado, se recomienda crear archivos
-`*.spec.ts` en la misma carpeta del componente o página:
+Para cubrir el sistema actual con pruebas mantenibles, ubicar cada `*.spec.ts` junto al componente
+o página que se prueba. La tabla incluye todas las unidades Angular actuales y señala el
+comportamiento relevante. En componentes sin lógica propia, integrar la comprobación en la prueba
+de la página o componente padre si un archivo unitario independiente solo comprobaría que se
+crea; no añadir pruebas vacías para aumentar el conteo.
 
-| Archivo de prueba propuesto | Qué cubrir |
+| Archivo de prueba propuesto | Qué cubrir y por qué |
 | --- | --- |
-| `src/app/componentes/calendario/calendario.spec.ts` | Estado inicial, selección de día/hora, vista y accesibilidad, evento continuar. |
+| `src/app/componentes/acerca-de/acerca-de.spec.ts` | Renderizado del bloque y su título; protege una sección informativa del portal. |
+| `src/app/componentes/bloque-agendar/bloque-agendar.spec.ts` | Contenido de agendamiento y enlace hacia el calendario. |
+| `src/app/componentes/boton/boton.spec.ts` | Texto, tipo, variante y emisión de `pulsado`; es compartido por varias vistas. |
+| `src/app/componentes/caja-fotos/caja-fotos.spec.ts` | Fotos recibidas y estado con lista vacía. |
+| `src/app/componentes/calendario/calendario.spec.ts` | Estado inicial, selección de día/hora, accesibilidad y evento continuar. |
+| `src/app/componentes/campo-info/campo-info.spec.ts` | Etiqueta y valor recibidos; contrato usado al mostrar datos de cita. |
+| `src/app/componentes/card/card.spec.ts` | Entradas, valores predeterminados y emisión de `verMas`. |
+| `src/app/componentes/catalogo/catalogo.spec.ts` | Tarjetas por producto, lista vacía y emisión del producto elegido. |
+| `src/app/componentes/dashboard-lista/dashboard-lista.spec.ts` | Rol, actividades y paso correcto de datos a filas y paneles. |
+| `src/app/componentes/destacados/destacados.spec.ts` | Renderizado del título y contenido principal de la sección. |
+| `src/app/componentes/estado-badge/estado-badge.spec.ts` | Representación de los estados `ACTIVO`, `PENDIENTE` y `REVISION`. |
+| `src/app/componentes/fila-actividad/fila-actividad.spec.ts` | Texto y representación accesible de actividad completada o pendiente. |
+| `src/app/componentes/footer/footer.spec.ts` | Contenido esencial y destinos de navegación del pie de página. |
+| `src/app/componentes/header/header.spec.ts` | Título configurable, enlaces y comportamiento del menú si aplica. |
+| `src/app/componentes/hero-promo/hero-promo.spec.ts` | Contenido principal y acción de la promoción. |
+| `src/app/componentes/info-cita/info-cita.spec.ts` | Datos, contenido condicional y eventos confirmar/reagendar. |
+| `src/app/componentes/menu-productos/menu-productos.spec.ts` | Elementos recibidos y lista vacía. |
+| `src/app/componentes/panel-estado/panel-estado.spec.ts` | Renderizado del estado y del badge asociado. |
+| `src/app/componentes/titulo-seccion/titulo-seccion.spec.ts` | Texto recibido como título de sección. |
+| `src/app/paginas/portal-principal/portal-principal.spec.ts` | Productos, menú y composición de secciones del portal. |
 | `src/app/paginas/cita-calendario/cita-calendario.spec.ts` | Navegación a detalle al continuar. |
-| `src/app/paginas/cita-detalle/cita-detalle.spec.ts` | Navegación para confirmar y reagendar. |
-| `src/app/paginas/cita-confirmacion/cita-confirmacion.spec.ts` | Navegación posterior a confirmar y reagendar. |
-| `src/app/componentes/boton/boton.spec.ts` | Entradas, tipo, variante y evento de clic. |
-| `src/app/componentes/card/card.spec.ts` | Entradas, valores por defecto y evento `verMas`. |
-| `src/app/componentes/catalogo/catalogo.spec.ts` | Lista, datos de tarjeta, lista vacía y emisión del producto. |
-| `src/app/componentes/info-cita/info-cita.spec.ts` | Datos, aviso condicional y eventos. |
-| `src/app/componentes/dashboard-lista/dashboard-lista.spec.ts` | Rol, actividades y lista vacía. |
-| `src/app/componentes/fila-actividad/fila-actividad.spec.ts` | Estado, marca y etiqueta accesible. |
-| `src/app/paginas/portal-principal/portal-principal.spec.ts` | Datos iniciales y composición del portal. |
-| `src/app/paginas/admin/admin.spec.ts` y `src/app/paginas/mecanico/mecanico.spec.ts` | Datos y contenido de cada dashboard. |
-| `src/app/app.routes.spec.ts` | Rutas, pantallas y redirección desconocida. |
+| `src/app/paginas/cita-detalle/cita-detalle.spec.ts` | Destinos de confirmar y reagendar. |
+| `src/app/paginas/cita-confirmacion/cita-confirmacion.spec.ts` | Destinos de confirmar y reagendar desde la confirmación. |
+| `src/app/paginas/admin/admin.spec.ts` | Datos y contenido del dashboard de administrador. |
+| `src/app/paginas/mecanico/mecanico.spec.ts` | Datos y contenido del dashboard de mecánico. |
+| `src/app/app.spec.ts` | Comprobar el shell junto con el `RouterOutlet` si aporta una verificación útil; la navegación real se cubre en la prueba de rutas. |
+| `src/app/app.routes.spec.ts` | Resolución de todas las rutas declaradas y redirección comodín. |
 
-Crear pruebas para los otros componentes solo cuando tengan lógica, entradas, salidas o un
-requisito de presentación importante. Si el equipo prefiere separar pruebas, puede agregarse
-`src/app/testing/` para utilidades compartidas (por ejemplo, datos de prueba o configuración de
-router), sin duplicar fixtures sencillos.
+Las filas de renderizado son intencionalmente pequeñas: no se inventan métodos para componentes
+que no tienen lógica. Los modelos `Producto` y `Actividad` son interfaces sin comportamiento y se
+validan mediante compilación y consumo por los componentes. Los estilos CSS y la adaptación
+responsive requieren comprobación visual; el recorrido completo entre varias rutas corresponde a
+pruebas de integración. Puede agregarse `src/app/testing/` para fixtures o configuración común de
+router cuando la suite lo necesite.
 
-## 5. Archivos y configuración necesarios
+## 5. Preparación y configuración necesaria
 
 ### Necesarios para comenzar
 
-1. **`prueba/package.json`:** agregar un script cómodo para ejecutar pruebas, normalmente
-   `"test": "ng test"`, después de confirmar que el runner configurado es compatible con las
-   versiones Angular instaladas.
-2. **`prueba/angular.json`:** ya existe una configuración `architect.test` con el builder
-   `@angular/build:unit-test`. Confirmar sus opciones y el runner elegido antes de añadir otro
-   framework o dependencias; evitar configurar dos runners en paralelo.
-3. **Archivos `*.spec.ts`:** crear los casos priorizados junto a sus componentes/páginas, como
-   se detalla arriba. Para componentes standalone, configurar `TestBed` importando el componente
-   standalone y sus dependencias necesarias.
-4. **Pruebas de navegación:** usar el router de prueba disponible en la versión Angular del
-   proyecto o un espía de `Router` según el alcance del caso. No depender del navegador ni de un
-   servidor para pruebas unitarias.
-5. **`prueba/README.md`:** documentar el comando de ejecución y cómo agregar una prueba si se
-   incorpora el script al proyecto.
+1. **No instalar otro runner inicialmente.** `pp/prueba/angular.json` ya declara
+   `@angular/build:unit-test`; el CLI instalado ofrece Vitest como runner predeterminado y jsdom
+   como entorno Node predeterminado.
+2. **Agregar comandos a `pp/prueba/package.json`:** mantener los existentes y sumar
+   `"test": "ng test"` para desarrollo y `"test:ci": "ng test --watch=false"` para una ejecución
+   que termine automáticamente.
+3. **No modificar `tsconfig.json` de entrada.** Crear `tsconfig.spec.json` o ajustar la
+   configuración TypeScript solamente si el primer test muestra un problema concreto de inclusión
+   de archivos o tipos; no anticipar una configuración que quizá no se necesita.
+4. **Crear `*.spec.ts` junto al código probado**, siguiendo la matriz de la sección 4. En
+   componentes standalone, importarlos en `TestBed.configureTestingModule({ imports: [...] })`.
+5. **Aislar navegación y dependencias:** usar `provideRouter` para una prueba de enrutamiento o un
+   doble de `Router` con `vi.fn()` para comprobar una llamada de navegación sin cambiar de página.
+6. **Documentar los comandos** en `pp/prueba/README.md` cuando se agregue el script `test`.
+
+### Comandos
+
+Desde la raíz de la aplicación:
+
+```bash
+cd pp/prueba
+npm ci
+```
+
+`npm ci` se ejecuta al preparar un entorno limpio o instalar dependencias, no antes de cada
+prueba. Antes de agregar el script al `package.json`, se puede verificar el runner con:
+
+```bash
+npm exec ng test -- --watch=false
+```
+
+Cuando ya existan los scripts propuestos:
+
+```bash
+npm test                 # modo de desarrollo; puede quedar observando cambios
+npm run test:ci          # una ejecución y salida
+npm run test:ci -- --coverage
+npm run build
+```
+
+La cobertura se mide después de que los casos funcionales estén estabilizados. No se fija un
+porcentaje inicial sin conocer el baseline; se revisa qué ramas de comportamiento importante
+quedaron sin probar, no se persiguen líneas de CSS o código sin lógica.
 
 ### Necesarios si se implementa lógica de negocio
 
@@ -183,31 +241,132 @@ router), sin duplicar fixtures sencillos.
 - Un store o servicio de estado de cita y sus pruebas si la selección debe sobrevivir entre
   pantallas; el mecanismo concreto debe definirse antes de implementarlo.
 
-## 6. Organización de la implementación
+## 6. Cuándo hacer cada prueba
 
-1. Confirmar el runner y hacer que un primer `*.spec.ts` se ejecute con el comando del proyecto.
-2. Implementar primero las pruebas P0 del calendario, botones, información de cita y navegación.
-3. Agregar pruebas P1 de catálogo, dashboards y rutas.
-4. Corregir discrepancias detectadas entre comportamiento esperado y actual. Por ejemplo, los
-   controles de mes del calendario tienen etiquetas en la plantilla, pero todavía no implementan
-   una acción de cambio de mes; una prueba del requisito futuro debe añadirse junto con esa
-   funcionalidad, no presentarse como comportamiento ya soportado.
-5. Al agregar servicios o reglas nuevas, escribir sus pruebas unitarias con cada funcionalidad y
-   actualizar esta propuesta.
+Las pruebas se escriben y ejecutan durante el desarrollo, no solo al final:
 
-## 7. Ejecución y criterios de aceptación
+| Momento | Qué hacer | Por qué / salida esperada |
+| --- | --- | --- |
+| Antes de empezar la suite | Ejecutar una prueba mínima con el builder existente y confirmar el comando del runner. | Detectar problemas de entorno o configuración antes de escribir muchos casos. |
+| Antes o junto a cada cambio funcional | Escribir primero el caso que expresa el requisito; comprobar que falla por la razón esperada y luego implementar el comportamiento. | La prueba define el resultado solicitado y demuestra que detecta la ausencia o regresión de ese comportamiento. |
+| Después de cada archivo o grupo pequeño | Ejecutar el test afectado y corregirlo antes de continuar. | Acota rápidamente la causa si aparece un fallo. |
+| Al terminar una etapa P0/P1 | Ejecutar toda la suite en modo CI y revisar resultados. | Detectar interacciones entre unidades ya cubiertas. |
+| Antes de integrar/publicar cambios | Ejecutar suite completa y `npm run build`; revisar fallos y cobertura relevante. | Evitar integrar cambios que rompan pruebas o compilación de producción. |
+| Al desarrollar una nueva regla futura | Añadir casos unitarios con el servicio/estado/regla en el mismo cambio; añadir integración si cruza páginas o límites de datos. | Evitar que la regla quede sin protección desde que se incorpora. |
 
-- Poder ejecutar la suite desde `prueba/` con el script documentado en `package.json`.
+### Orden de implementación
+
+1. **Preparación:** validar `ng test`, agregar scripts `test` y `test:ci`, y crear un primer caso de
+    componente pequeño, por ejemplo `Boton`. No tocar `tsconfig.json` salvo que aparezca un error
+    que lo requiera.
+2. **P0 — interacción reutilizable y cita:** cubrir `Boton`, `Calendario`, `InfoCita` y las tres
+    páginas del flujo. Verificar estado seleccionado, eventos y destinos de navegación actuales.
+3. **P1 — componentes y pantallas restantes:** completar la matriz de componentes con entradas,
+    listas, estados, enlaces y contenido funcional; cubrir portal, dashboards, shell y rutas.
+4. **P2 — nuevas reglas de negocio:** incorporar servicios/estado solo cuando se implemente esa
+    funcionalidad, y probar casos válidos, inválidos, límites y errores según el requisito.
+5. **Cierre de cada etapa:** ejecutar `npm run test:ci` y `npm run build`, documentar cualquier
+    comportamiento pendiente y no convertir requisitos futuros en expectativas del código actual.
+
+Los controles del calendario muestran etiquetas de navegación entre meses, pero hoy no cambian
+el mes; la selección tampoco se conserva entre pantallas. Esos casos se incorporan cuando se
+implemente el comportamiento, no como pruebas que deban fallar en la primera suite.
+
+## 7. Plantillas para identificar y escribir pruebas
+
+### Ficha para el plan de casos
+
+Registrar una fila por resultado esperado antes de codificar el test. El ID facilita reportar
+fallos y vincular cada caso a un requisito.
+
+| ID | Unidad/archivo | Prioridad | Estado inicial | Acción | Resultado observable esperado | Justificación |
+| --- | --- | --- | --- | --- | --- | --- |
+| CAL-02 | `Calendario.seleccionarDia` | P0 | Día seleccionado `18` | Seleccionar día `7` | `diaSeleccionado` vale `7` y la vista marca el botón de día 7 como seleccionado. | Evita que estado y selección visible discrepen. |
+| [AREA-00] | [componente, página o servicio] | [P0/P1/P2] | [entradas y dependencias] | [clic, entrada o llamada] | [afirmación que se pueda comprobar] | [riesgo que reduce] |
+
+Prefijos sugeridos: `BOT` (botón), `CAL` (calendario), `CIT` (cita), `CAT` (catálogo), `DASH`
+(dashboards), `RUT` (rutas), `PORT` (portal). No se considera un caso completo si su resultado
+esperado solo dice “funciona”.
+
+### Estructura base para un componente standalone
+
+Ejemplo de forma para `src/app/componentes/boton/boton.spec.ts`; cada test debe comprobar una
+regla observable y usar las entradas/eventos reales del componente.
+
+```ts
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { Boton } from './boton';
+
+describe('Boton', () => {
+   let fixture: ComponentFixture<Boton>;
+
+   beforeEach(async () => {
+      await TestBed.configureTestingModule({ imports: [Boton] }).compileComponents();
+      fixture = TestBed.createComponent(Boton);
+      fixture.componentRef.setInput('texto', 'Guardar');
+      fixture.detectChanges();
+   });
+
+   it('muestra el texto recibido', () => {
+      const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+      expect(button.textContent).toContain('Guardar');
+   });
+});
+```
+
+Para una salida, suscribirse a `fixture.componentInstance.pulsado`, activar el botón y afirmar
+que el suscriptor se invocó una vez. Para una entrada, usar `setInput`; para la vista, ejecutar
+`detectChanges()` y comprobar el DOM/atributo accesible que expresa el comportamiento. Evitar
+assertions sobre clases CSS internas salvo que la clase represente un estado funcional.
+
+### Estructura para una página que navega
+
+En pruebas unitarias de los métodos de página, proporcionar un `Router` falso y comprobar el
+destino solicitado, sin navegación real:
+
+```ts
+const router = { navigate: vi.fn() };
+// En la configuración de TestBed:
+providers: [{ provide: Router, useValue: router }]
+// En el caso:
+component.confirmar();
+expect(router.navigate).toHaveBeenCalledWith(['/cita/confirmacion']);
+```
+
+Importar `Router` desde `@angular/router` y `vi` desde `vitest`. Para comprobar que las URLs
+resuelven a las páginas correctas, usar una prueba separada del router con `provideRouter(routes)`;
+esa verificación es de integración, no una prueba del método de la página.
+
+### Qué hacer cuando falla un test
+
+1. Leer el primer error y localizar la aserción fallida; ejecutar solo ese caso con `--filter`
+    mientras se depura.
+2. Decidir si falló el comportamiento de la aplicación, la configuración del test o si cambió el
+    requisito.
+3. Corregir la implementación si contradice el requisito. Actualizar la expectativa solo si el
+    requisito cambió y documentar el cambio; no cambiarla únicamente para obtener verde.
+4. Volver a ejecutar el caso aislado y después toda la suite. Al cerrar, ejecutar también el build.
+
+## 8. Criterios de aceptación
+
+- Poder ejecutar las pruebas desde `pp/prueba/` mediante los scripts documentados en `package.json`.
 - Las pruebas deben ser deterministas: no depender de fecha/hora del sistema, red, backend o
   estado externo. Cuando se pruebe lógica de calendario futura, controlar la fecha de referencia.
 - Cada prueba debe verificar un resultado observable (estado, evento, navegación o DOM), no solo
   que el componente fue creado.
+- Todo comportamiento funcional actual de componentes, páginas, shell y rutas queda cubierto por
+   la matriz; los componentes presentacionales simples pueden comprobarse desde su padre para no
+   añadir tests vacíos.
 - Mantener separados los casos que describen el comportamiento actual de los criterios futuros
-  que dependen de funcionalidades aún no implementadas.
-- Ejecutar también `npm run build` para confirmar que los cambios a pruebas/configuración no
-  rompan la compilación de producción.
+   que dependen de funcionalidades aún no implementadas.
+- Ejecutar `npm run test:ci` y `npm run build` antes de integrar una etapa.
+- Medir cobertura cuando la suite P0 esté estable y usarla para encontrar lógica importante sin
+   caso; no establecer un umbral arbitrario ni perseguir cobertura de estilos.
+- La adaptación responsive requiere una comprobación visual en móvil y escritorio; no se da por
+   validada solo porque la suite unitaria pase.
 
-## 8. Estado actual observado
+## 9. Estado actual observado
 
 - La aplicación está bajo `pp/prueba/`; las carpetas prioritarias son
   `src/app/componentes/`, `src/app/paginas/` y, para revisar la navegación,
